@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Consulta de Localização por CEP</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+
+        #result {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Consulta de Localização por CEP</h1>
+    
+    <label for="cepInput">Digite o CEP: </label>
+    <input type="text" id="cepInput" placeholder="Digite o CEP">
+    <button onclick="buscarCEP()">Buscar</button>
+
+    <div id="result"></div>
+
+    <script>
+        function buscarCEP() {
+            // Limpar resultados anteriores
+            document.getElementById('result').innerHTML = '';
+
+            // Obter o valor do CEP digitado
+            var cep = document.getElementById('cepInput').value;
+
+            // Verificar se o CEP é válido
+            if (cep.length !== 8 || isNaN(cep)) {
+                alert('CEP inválido. Digite um CEP válido com 8 dígitos numéricos.');
+                return;
+            }
+
+            // Construir a URL da API do ViaCEP
+            var apiUrl = 'https://viacep.com.br/ws/' + cep + '/json/';
+
+            // Fazer a requisição AJAX para a API do ViaCEP
+            fetch(apiUrl)
+                .then(response => response.json())
+                .then(data => exibirResultado(data))
+                .catch(error => console.error('Erro na requisição:', error));
+        }
+
+        function exibirResultado(data) {
+            var resultDiv = document.getElementById('result');
+
+            // Verificar se a API retornou um erro
+            if (data.erro) {
+                resultDiv.innerHTML = '<p>CEP não encontrado. Verifique o CEP digitado.</p>';
+            } else {
+                // Exibir os dados de localização
+                resultDiv.innerHTML = `
+                    <p><strong>CEP:</strong> ${data.cep}</p>
+                    <p><strong>Logradouro:</strong> ${data.logradouro}</p>
+                    <p><strong>Bairro:</strong> ${data.bairro}</p>
+                    <p><strong>Cidade/UF:</strong> ${data.localidade}/${data.uf}</p>
+                `;
+            }
+        }
+    </script>
+</body>
+</html>
