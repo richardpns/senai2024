@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&display=swap">
+    <title>Atualização de Carro</title>
+</head>
+<body>
+    <header>
+        <h1>ATUALIZAR CARRO</h1>
+    </header>
+    <nav>
+        <a href="./index.html">Listar todos</a>
+        <a href="./att.html">Atualização</a>
+        <a href="./form.html">Cadastrar</a>
+    </nav>
+    <main>
+        <form id="updateForm">
+            <label>ID do Carro:</label>
+            <input type="text" name="id" id="id" required>
+            <label>Nova Placa:</label>
+            <input type="text" name="placa" id="placa" required>
+            <label>Nova Marca:</label>
+            <input type="text" name="marca" id="marca" required>
+            <label>Nova Modelo:</label>
+            <input type="text" name="modelo" id="modelo" required>
+            <label>Novo Ano:</label>
+            <input type="date" name="ano" id="ano" required>
+            <input type="submit" value="Enviar" id="update">
+        </form>
+    </main>
+    <footer>
+    </footer>
+    <script>
+        document.getElementById('updateForm').addEventListener('submit', function(e){
+            e.preventDefault();
+            const id = document.getElementById('id').value;
+            const placa = document.getElementById('placa').value;
+            const marca = document.getElementById('marca').value;
+            const modelo = document.getElementById('modelo').value;
+            const ano = document.getElementById('ano').value;
+            fetch(`http://localhost:3000/carros/${id}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ placa, marca, modelo, ano })
+            })
+            .then(res => {
+                if (!res.ok) {
+                    throw new Error('Falha ao atualizar carro');
+                }
+                return res.json();
+            })
+            .then(data => {
+                alert('Carro atualizado com sucesso!');
+                window.location.href = './index.html';
+            })
+            .catch(error => {
+                console.error('Erro ao atualizar carro:', error.message);
+                alert('Erro ao atualizar carro. Por favor, tente novamente.');
+            });
+        });
+    </script>
+</body>
+</html>

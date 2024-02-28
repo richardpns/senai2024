@@ -1,0 +1,30 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&display=swap">
+    <title>Locadora</title>
+</head>
+<body>
+    <header>
+        <h1>CADASTRO DE CARROS</h1>
+    </header>
+    <nav>
+        <a href="./index.html">Listar todos</a>
+        <a href="./att.html">Atualização</a>
+        <a href="./form.html">Cadastrar</a>
+    </nav>
+    <main>
+        <form action="http://localhost:3000/carros" method="post">
+            <input type="text" name="placa" placeholder="AAA1A11" required>
+            <input type="text" name="marca" placeholder="marca" required>
+            <input type="text" name="modelo" placeholder="modelo" required>
+            <input type="date" name="ano" placeholder="ano" required>
+            <input type="submit" value="Enviar">
+        </form>
+    </main>
+    <footer>
+    </footer>
+</body>
+</html>
