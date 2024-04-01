@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daily Check - Temperatura</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <a class="navbar-brand" href="#">Daily Check</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="index.html">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Temperatura</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="tarefas.html">Tarefas</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="contato.html">Contato</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container mt-5">
+        <h1>Consultar Temperatura</h1>
+        <form id="temperatureForm">
+          <div class="form-group">
+            <label for="city">Cidade:</label>
+            <input type="text" class="form-control" id="city" placeholder="Digite o nome da cidade">
+          </div>
+          <button type="submit" class="btn btn-primary">Consultar</button>
+        </form>
+      
+        <div class="mt-4" id="temperatureResult" style="display: none;">
+          <h2>Temperatura em <span id="cityName"></span>:</h2>
+          <p id="temperature"></p>
+        </div>
+      </div>
+      
+      <script>
+        document.getElementById('temperatureForm').addEventListener('submit', function(event) {
+          event.preventDefault();
+          const city = document.getElementById('city').value;
+          getTemperature(city);
+        });
+      
+        async function getTemperature(city) {
+          const apiKey = '6f7d329aa99d7e0b16b402f12d21095b';
+          const apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`;
+          
+          try {
+            const response = await fetch(apiUrl);
+            const data = await response.json();
+      
+            if (data.cod === 200) {
+              const temperature = data.main.temp;
+              displayTemperature(city, temperature);
+            } else {
+              alert('Cidade não encontrada. Por favor, verifique o nome da cidade.');
+            }
+          } catch (error) {
+            console.error('Erro ao obter a temperatura:', error);
+          }
+        }
+      
+        function displayTemperature(city, temperature) {
+          document.getElementById('cityName').textContent = city;
+          document.getElementById('temperature').textContent = `${temperature}°C`;
+          document.getElementById('temperatureResult').style.display = 'block';
+        }
+      </script>
+
+    <!-- JavaScript e Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
